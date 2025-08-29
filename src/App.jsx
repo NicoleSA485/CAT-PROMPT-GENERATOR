@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 // Main App component
 const App = () => {
@@ -505,6 +506,7 @@ const App = () => {
 
                     </div>
                 )}
+                 <SpeedInsights />
             </div>
         </div>
     );
