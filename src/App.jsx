@@ -35,21 +35,45 @@ const App = () => {
         return response.json();
     };
 
-    const generateCatPrompt = async () => {
-        setIsLoading(true);
-        setMessage('');
+    const resetState = () => {
         setPrompt('');
         setVariations([]);
         setStory('');
         setTranslatedPrompt('');
         setExpandedPrompt('');
         setHashtags([]);
+        setMessage('');
         setVariationMessage('');
         setStoryMessage('');
         setTranslateMessage('');
         setExpandMessage('');
         setHashtagMessage('');
-        const userPrompt = `Generate a highly detailed, imaginative, and Ai-friendly cat prompt for image and video generation...`;
+    };
+
+    const generateCatPrompt = async () => {
+        setIsLoading(true);
+        resetState();
+
+        const userPrompt = `Generate a highly detailed, imaginative, and Ai-friendly cat prompt for image and video generation.
+        Focus on descriptive adjectives, actions, environments, and specific stylistic elements.
+        The prompt should be suitable for generating diverse and creative cat imagery.
+        Include elements like:
+        - Cat's breed, color, or unique markings
+        - Its expression or emotion
+        - An action it's performing
+        - The setting or environment
+        - Lighting conditions
+        - Artistic style (e.g., cyberpunk, watercolor, realistic, fantasy)
+        - Camera angle or shot type (e.g., close-up, wide shot)
+
+        Examples:
+        - "A majestic fluffy Ragdoll cat with sapphire eyes, gracefully leaping through a sunlit field of lavender, hyperrealistic, golden hour, wide shot."
+        - "A mischievous black Scottish Fold kitten, playfully batting at a glowing pixelated butterfly in a neon-lit cyberpunk alley, low angle, digital art, vibrant colors."
+        - "An ancient, wise Siamese cat, meditating atop a snow-capped mountain peak under a starry night sky, mystical, highly detailed, dramatic lighting."
+        - "A cute ginger tabby cat wearing a tiny wizard hat, casting a sparkling spell from a spellbook in a cozy, magical library, enchanted, soft lighting, depth of field."
+
+        Generate only one prompt.`;
+
         const payload = { contents: [{ role: "user", parts: [{ text: userPrompt }] }] };
         try {
             const result = await callApi(payload);
@@ -70,7 +94,16 @@ const App = () => {
         setIsVariationsLoading(true);
         setVariations([]);
         setVariationMessage('');
-        const userPrompt = `Given the following Ai cat prompt: "${prompt}", generate 3 distinct variations...`;
+        const userPrompt = `Given the following Ai cat prompt: "${prompt}"
+        
+        Generate 3 distinct variations of this prompt. Each variation should offer a different artistic style, environment, or action, while keeping the core subject (a cat) consistent. Format the output as a JSON array of strings, where each string is a new prompt variation.
+        
+        Example:
+        [
+          "A sleek black cat with glowing emerald eyes, perched on a futuristic skyscraper overlooking a neon-drenched city, cyberpunk art, rainy night, cinematic shot.",
+          "A fluffy Persian cat with a whimsical expression, floating amongst oversized glowing mushrooms in an enchanted forest, watercolor painting, soft ethereal light.",
+          "An adventurous tabby cat exploring ancient ruins covered in lush vines, realistic, dappled sunlight, wide-angle lens."
+        ]`;
         const payload = { contents: [{ role: "user", parts: [{ text: userPrompt }] }], generationConfig: { responseMimeType: "application/json", responseSchema: { type: "ARRAY", items: { "type": "STRING" } } } };
         try {
             const result = await callApi(payload);
@@ -92,7 +125,9 @@ const App = () => {
         setIsStoryLoading(true);
         setStory('');
         setStoryMessage('');
-        const userPrompt = `Write a short, imaginative, and engaging story (around 3-5 sentences) based on the following Ai cat prompt: "${prompt}"`;
+        const userPrompt = `Write a short, imaginative, and engaging story (around 3-5 sentences) based on the following Ai cat prompt: "${prompt}"
+        
+        Focus on bringing the cat and its described environment/action to life in a narrative format.`;
         const payload = { contents: [{ role: "user", parts: [{ text: userPrompt }] }] };
         try {
             const result = await callApi(payload);
@@ -113,7 +148,7 @@ const App = () => {
         setIsExpandLoading(true);
         setExpandedPrompt('');
         setExpandMessage('');
-        const userPrompt = `Expand and elaborate on the following Ai image prompt...: "${prompt}"`;
+        const userPrompt = `Expand and elaborate on the following Ai image prompt, adding more descriptive details, elements, and potential artistic modifiers. Make it significantly longer and richer: "${prompt}"`;
         const payload = { contents: [{ role: "user", parts: [{ text: userPrompt }] }] };
         try {
             const result = await callApi(payload);
@@ -134,7 +169,7 @@ const App = () => {
         setIsHashtagsLoading(true);
         setHashtags([]);
         setHashtagMessage('');
-        const userPrompt = `Generate 5-7 relevant hashtags...: "${prompt}"`;
+        const userPrompt = `Generate 5-7 relevant and popular hashtags for social media based on the following Ai image prompt: "${prompt}". Provide them as a JSON array of strings.`;
         const payload = { contents: [{ role: "user", parts: [{ text: userPrompt }] }], generationConfig: { responseMimeType: "application/json", responseSchema: { type: "ARRAY", items: { "type": "STRING" } } } };
         try {
             const result = await callApi(payload);
@@ -173,7 +208,10 @@ const App = () => {
     };
 
     const copyToClipboard = (textToCopy) => {
-        if (textToCopy) navigator.clipboard.writeText(textToCopy).then(() => setMessage('Copied!'));
+        if (textToCopy) navigator.clipboard.writeText(textToCopy).then(() => {
+            setMessage('Copied!');
+            setTimeout(() => setMessage(''), 2000);
+        });
     };
 
     const CosmicCatHead = () => (
@@ -197,57 +235,68 @@ const App = () => {
         </button>
     );
 
-    const ResultCard = ({ title, children }) => (
-        <div className="bg-slate-900/70 p-6 rounded-xl border border-slate-700 shadow-inner text-left mb-6">
+    const ResultCard = ({ title, children, textToCopy }) => (
+        <div className="bg-slate-900/70 p-4 rounded-xl border border-slate-700 shadow-inner text-left mb-6 relative">
             <h3 className="text-lg font-semibold text-purple-300 mb-3">{title}</h3>
-            {children}
+            <div className="text-slate-300 italic leading-relaxed pr-10">
+                {children}
+            </div>
+            {textToCopy && (
+                <button onClick={() => copyToClipboard(textToCopy)} className="absolute top-3 right-3 text-slate-400 hover:text-white transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                </button>
+            )}
         </div>
     );
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-900 bg-gradient-to-br from-gray-900 via-purple-900 to-black p-4 font-inter text-slate-200">
-            <div className="bg-slate-800/50 backdrop-blur-xl p-8 rounded-2xl shadow-2xl shadow-purple-500/20 max-w-lg w-full text-center border border-slate-700">
-                <h1 className="text-4xl sm:text-5xl font-extrabold text-purple-300 mb-6 drop-shadow-lg flex items-center justify-center" style={{ fontFamily: "'Comfortaa', cursive" }}>
+            <div className="bg-slate-800/50 backdrop-blur-xl p-6 sm:p-8 rounded-2xl shadow-2xl shadow-purple-500/20 max-w-2xl w-full text-center border border-slate-700">
+                <h1 className="text-3xl sm:text-5xl font-extrabold text-purple-300 mb-6 drop-shadow-lg flex items-center justify-center" style={{ fontFamily: "'Comfortaa', cursive" }}>
                     <CosmicCatHead /> Ai Cat Prompt Generator <CosmicCatHead />
                 </h1>
-                <p className="text-lg text-slate-300 mb-8">Click the button to generate a unique and inspiring Ai prompt for your next creation!</p>
+                <p className="text-md sm:text-lg text-slate-300 mb-8">Click the button to generate a unique and inspiring Ai prompt for your next creation!</p>
                 
-                <div className="mb-8 min-h-[100px] flex items-center justify-center bg-slate-900/70 p-6 rounded-xl border border-slate-700 shadow-inner">
-                    {isLoading ? <span className="text-purple-400">Generating...</span> : (prompt ? <p className="text-xl text-white italic leading-relaxed">{prompt}</p> : <p className="text-lg text-slate-400">Your cosmic cat prompt will appear here.</p>)}
+                <div className="mb-8 min-h-[120px] flex items-center justify-center bg-slate-900/70 p-6 rounded-xl border border-slate-700 shadow-inner relative">
+                    {isLoading ? <span className="text-purple-400">Generating...</span> : (prompt ? <p className="text-lg sm:text-xl text-white italic leading-relaxed">{prompt}</p> : <p className="text-lg text-slate-400">Your cosmic cat prompt will appear here.</p>)}
+                    {prompt && !isLoading && (
+                         <button onClick={() => copyToClipboard(prompt)} className="absolute top-3 right-3 text-slate-400 hover:text-white transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                        </button>
+                    )}
                 </div>
 
                 <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-4">
                     <button onClick={generateCatPrompt} disabled={isLoading} className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-purple-400 disabled:opacity-50 disabled:cursor-not-allowed">
                         {isLoading ? 'Generating...' : '🐾 Generate New Prompt'}
                     </button>
-                    <button onClick={() => copyToClipboard(prompt)} disabled={!prompt} className="bg-slate-600 hover:bg-slate-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-slate-400 disabled:opacity-50 disabled:cursor-not-allowed">
-                        📋 Copy Prompt
-                    </button>
                 </div>
                 {message && <p className="mt-4 text-sm text-green-400">{message}</p>}
 
-                {prompt && (
+                {prompt && !isLoading && (
                     <div className="mt-10 pt-6 border-t-2 border-slate-700">
                         <h2 className="text-2xl font-bold text-purple-300 mb-6">Explore More Options</h2>
                         
                         <ActionButton onClick={generateVariations} isLoading={isVariationsLoading} disabled={!prompt} className="bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-400">💡 Suggest Variations</ActionButton>
-                        {variations.length > 0 && <ResultCard title="Prompt Variations:"><ul className="list-disc list-inside space-y-2 text-slate-300">{variations.map((v, i) => <li key={i}>{v}</li>)}</ul></ResultCard>}
+                        {variations.length > 0 && <ResultCard title="Prompt Variations:" textToCopy={variations.join('
+
+')}><ul className="list-none space-y-2">{variations.map((v, i) => <li key={i} className="p-2 bg-slate-800/50 rounded-md">{v}</li>)}</ul></ResultCard>}
                         {variationMessage && <p className="mt-2 text-sm text-red-500">{variationMessage}</p>}
 
                         <ActionButton onClick={generateStory} isLoading={isStoryLoading} disabled={!prompt} className="bg-teal-600 hover:bg-teal-700 focus:ring-teal-400">📖 Generate Story</ActionButton>
-                        {story && <ResultCard title="The Cat's Tale:"><p className="text-slate-300 italic leading-relaxed">{story}</p></ResultCard>}
+                        {story && <ResultCard title="The Cat's Tale:" textToCopy={story}><p>{story}</p></ResultCard>}
                         {storyMessage && <p className="mt-2 text-sm text-red-500">{storyMessage}</p>}
 
                         <ActionButton onClick={expandPrompt} isLoading={isExpandLoading} disabled={!prompt} className="bg-sky-600 hover:bg-sky-700 focus:ring-sky-400">➕ Expand Prompt</ActionButton>
-                        {expandedPrompt && <ResultCard title="Expanded Prompt:"><p className="text-slate-300 italic leading-relaxed">{expandedPrompt}</p></ResultCard>}
+                        {expandedPrompt && <ResultCard title="Expanded Prompt:" textToCopy={expandedPrompt}><p>{expandedPrompt}</p></ResultCard>}
                         {expandMessage && <p className="mt-2 text-sm text-red-500">{expandMessage}</p>}
 
                         <ActionButton onClick={generateHashtags} isLoading={isHashtagsLoading} disabled={!prompt} className="bg-rose-600 hover:bg-rose-700 focus:ring-rose-400">🏷️ Generate Hashtags</ActionButton>
-                        {hashtags.length > 0 && <ResultCard title="Suggested Hashtags:"><p className="text-slate-300 italic leading-relaxed">{hashtags.join(' ')}</p></ResultCard>}
+                        {hashtags.length > 0 && <ResultCard title="Suggested Hashtags:" textToCopy={hashtags.join(' ')}><p>{hashtags.join(' ')}</p></ResultCard>}
                         {hashtagMessage && <p className="mt-2 text-sm text-red-500">{hashtagMessage}</p>}
 
                         <ActionButton onClick={translatePrompt} isLoading={isTranslateLoading} disabled={!prompt} className="bg-slate-600 hover:bg-slate-700 focus:ring-slate-400">🌐 Translate to Japanese</ActionButton>
-                        {translatedPrompt && <ResultCard title="Translated Prompt:"><p className="text-slate-300 italic leading-relaxed">{translatedPrompt}</p></ResultCard>}
+                        {translatedPrompt && <ResultCard title="Translated Prompt:" textToCopy={translatedPrompt}><p>{translatedPrompt}</p></ResultCard>}
                         {translateMessage && <p className="mt-2 text-sm text-red-500">{translateMessage}</p>}
                     </div>
                 )}
