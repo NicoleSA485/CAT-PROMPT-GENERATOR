@@ -278,9 +278,7 @@ const App = () => {
                         <h2 className="text-2xl font-bold text-purple-300 mb-6">Explore More Options</h2>
                         
                         <ActionButton onClick={generateVariations} isLoading={isVariationsLoading} disabled={!prompt} className="bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-400">💡 Suggest Variations</ActionButton>
-                        {variations.length > 0 && <ResultCard title="Prompt Variations:" textToCopy={variations.join('
-
-')}><ul className="list-none space-y-2">{variations.map((v, i) => <li key={i} className="p-2 bg-slate-800/50 rounded-md">{v}</li>)}</ul></ResultCard>}
+                        {variations.length > 0 && <ResultCard title="Prompt Variations:" textToCopy={variations.join('\n\n')}><ul className="list-none space-y-2">{variations.map((v, i) => <li key={i} className="p-2 bg-slate-800/50 rounded-md">{v}</li>)}</ul></ResultCard>}
                         {variationMessage && <p className="mt-2 text-sm text-red-500">{variationMessage}</p>}
 
                         <ActionButton onClick={generateStory} isLoading={isStoryLoading} disabled={!prompt} className="bg-teal-600 hover:bg-teal-700 focus:ring-teal-400">📖 Generate Story</ActionButton>
