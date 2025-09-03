@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import { Analytics } from "@vercel/analytics/react";
 
 // Main App component
 const App = () => {
@@ -84,7 +85,8 @@ const App = () => {
             }
         } catch (error) {
             setMessage(`An error occurred: ${error.message}`);
-        } finally {
+        }
+        finally {
             setIsLoading(false);
         }
     };
@@ -115,7 +117,8 @@ const App = () => {
             }
         } catch (error) {
             setVariationMessage(`An error occurred: ${error.message}`);
-        } finally {
+        }
+        finally {
             setIsVariationsLoading(false);
         }
     };
@@ -138,7 +141,8 @@ const App = () => {
             }
         } catch (error) {
             setStoryMessage(`An error occurred: ${error.message}`);
-        } finally {
+        }
+        finally {
             setIsStoryLoading(false);
         }
     };
@@ -159,7 +163,8 @@ const App = () => {
             }
         } catch (error) {
             setExpandMessage(`An error occurred: ${error.message}`);
-        } finally {
+        }
+        finally {
             setIsExpandLoading(false);
         }
     };
@@ -181,7 +186,8 @@ const App = () => {
             }
         } catch (error) {
             setHashtagMessage(`An error occurred: ${error.message}`);
-        } finally {
+        }
+        finally {
             setIsHashtagsLoading(false);
         }
     };
@@ -202,7 +208,8 @@ const App = () => {
             }
         } catch (error) {
             setTranslateMessage(`An error occurred: ${error.message}`);
-        } finally {
+        }
+        finally {
             setIsTranslateLoading(false);
         }
     };
@@ -214,29 +221,16 @@ const App = () => {
         });
     };
 
-    const CosmicCatHead = () => (
-        <svg width="48" height="48" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="inline-block mx-2 align-middle">
-            <rect x="2" y="4" width="12" height="10" fill="#334155"/>
-            <rect x="3" y="2" width="2" height="2" fill="#334155"/>
-            <rect x="11" y="2" width="2" height="2" fill="#334155"/>
-            <rect x="4" y="3" width="1" height="1" fill="#a78bfa"/>
-            <rect x="11" y="3" width="1" height="1" fill="#a78bfa"/>
-            <rect x="5" y="6" width="2" height="2" fill="#67e8f9"/>
-            <rect x="9" y="6" width="2" height="2" fill="#67e8f9"/>
-            <rect x="7" y="9" width="2" height="1" fill="#e0e7ff"/>
-            <rect x="6" y="10" width="1" height="1" fill="#e0e7ff"/>
-            <rect x="9" y="10" width="1" height="1" fill="#e0e7ff"/>
-        </svg>
-    );
+    
 
     const ActionButton = ({ onClick, isLoading, disabled, children, className }) => (
-        <button onClick={onClick} disabled={isLoading || disabled} className={`w-full font-bold py-3 px-6 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out focus:outline-none focus:ring-4 disabled:opacity-50 disabled:cursor-not-allowed mb-4 ${className}`}>
+        <button onClick={onClick} disabled={isLoading || disabled} className={`font-bold py-3 px-6 rounded-xl transform hover:scale-105 transition duration-300 ease-in-out focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed mb-4 uppercase ${className}`}>
             {isLoading ? 'Loading...' : children}
         </button>
     );
 
     const ResultCard = ({ title, children, textToCopy }) => (
-        <div className="bg-slate-900/70 p-4 rounded-xl border border-slate-700 shadow-inner text-left mb-6 relative">
+        <div className="bg-slate-900/70 p-4 rounded-xl text-left mb-6 relative">
             <h3 className="text-lg font-semibold text-purple-300 mb-3">{title}</h3>
             <div className="text-slate-300 italic leading-relaxed pr-10">
                 {children}
@@ -250,54 +244,73 @@ const App = () => {
     );
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-900 bg-gradient-to-br from-gray-900 via-purple-900 to-black p-4 font-inter text-slate-200">
-            <div className="bg-slate-800/50 backdrop-blur-xl p-6 sm:p-8 rounded-2xl shadow-2xl shadow-purple-500/20 max-w-2xl w-full text-center border border-slate-700">
-                <h1 className="text-3xl sm:text-5xl font-extrabold text-purple-300 mb-6 drop-shadow-lg flex items-center justify-center" style={{ fontFamily: "'Comfortaa', cursive" }}>
-                    <CosmicCatHead /> Ai Cat Prompt Generator <CosmicCatHead />
+        <div className="min-h-screen flex items-center justify-center bg-gray-900 bg-gradient-to-br from-gray-900 via-purple-900 to-black p-4 text-slate-200">
+            <div className="bg-slate-800/50 backdrop-blur-xl p-6 sm:p-8 rounded-2xl max-w-2xl w-full text-center">
+                <h1 className="text-3xl sm:text-5xl font-extrabold text-purple-300 mb-6 drop-shadow-lg flex items-center justify-center">
+                    <img src="/FavIcon.png" alt="Cat Icon" className="inline-block mx-2 align-middle" width="104" height="104" /> Ai Cat Prompt Generator <img src="/FavIcon.png" alt="Cat Icon" className="inline-block mx-2 align-middle" width="104" height="104" />
                 </h1>
-                <p className="text-md sm:text-lg text-slate-300 mb-8">Click the button to generate a unique and inspiring Ai prompt for your next creation!</p>
+                <div className="flex justify-center mb-8">
+                    <button onClick={generateCatPrompt} disabled={isLoading} className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-4 px-8 rounded-xl transform hover:scale-105 transition duration-300 ease-in-out focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed uppercase">
+                        {isLoading ? 'Generating...' : 'Click Button'}
+                    </button>
+                </div>
                 
-                <div className="mb-8 min-h-[120px] flex items-center justify-center bg-slate-900/70 p-6 rounded-xl border border-slate-700 shadow-inner relative">
+                
+                <div className="mb-8 min-h-[120px] flex items-center justify-center bg-slate-900/70 p-6 rounded-xl relative">
                     {isLoading ? <span className="text-purple-400">Generating...</span> : (prompt ? <p className="text-lg sm:text-xl text-white italic leading-relaxed">{prompt}</p> : <p className="text-lg text-slate-400">Your cosmic cat prompt will appear here.</p>)}
-                    {prompt && !isLoading && (
-                         <button onClick={() => copyToClipboard(prompt)} className="absolute top-3 right-3 text-slate-400 hover:text-white transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
-                        </button>
-                    )}
                 </div>
 
-                <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-4">
-                    <button onClick={generateCatPrompt} disabled={isLoading} className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-purple-400 disabled:opacity-50 disabled:cursor-not-allowed">
-                        {isLoading ? 'Generating...' : '🐾 Generate New Prompt'}
-                    </button>
+                <div className="bg-slate-900/50 p-4 rounded-xl">
+                    
+                    {prompt && !isLoading && (
+                        <div className="inline-block">
+                            <button onClick={() => copyToClipboard(prompt)} className="text-slate-400 hover:text-white transition-colors uppercase" style={{ textTransform: 'uppercase' }}>
+                                Copy Prompt
+                            </button>
+                        </div>
+                    )}
                 </div>
                 {message && <p className="mt-4 text-sm text-green-400">{message}</p>}
 
                 {prompt && !isLoading && (
-                    <div className="mt-10 pt-6 border-t-2 border-slate-700">
+                    <div className="mt-10 pt-6">
                         <h2 className="text-2xl font-bold text-purple-300 mb-6">Explore More Options</h2>
                         
-                        <ActionButton onClick={generateVariations} isLoading={isVariationsLoading} disabled={!prompt} className="bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-400">💡 Suggest Variations</ActionButton>
-                        {variations.length > 0 && <ResultCard title="Prompt Variations:" textToCopy={variations.join('\n\n')}><ul className="list-none space-y-2">{variations.map((v, i) => <li key={i} className="p-2 bg-slate-800/50 rounded-md">{v}</li>)}</ul></ResultCard>}
+                        <div className="flex flex-wrap justify-center gap-4">
+                        <div className="bg-slate-900/50 p-4 rounded-xl">
+                            <ActionButton onClick={generateVariations} isLoading={isVariationsLoading} disabled={!prompt} className="bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-400">💡 Suggest Variations</ActionButton>
+                        </div>
+                        {variations.length > 0 && <ResultCard title="Prompt Variations:" textToCopy={variations.join(`
+
+`)}><ul className="list-none space-y-2">{variations.map((v, i) => <li key={i} className="p-2 bg-slate-800/50 rounded-md">{v}</li>)}</ul></ResultCard>}
                         {variationMessage && <p className="mt-2 text-sm text-red-500">{variationMessage}</p>}
 
-                        <ActionButton onClick={generateStory} isLoading={isStoryLoading} disabled={!prompt} className="bg-teal-600 hover:bg-teal-700 focus:ring-teal-400">📖 Generate Story</ActionButton>
+                        <div className="bg-slate-900/50 p-4 rounded-xl">
+                            <ActionButton onClick={generateStory} isLoading={isStoryLoading} disabled={!prompt} className="bg-teal-600 hover:bg-teal-700 focus:ring-teal-400">📖 Generate Story</ActionButton>
+                        </div>
                         {story && <ResultCard title="The Cat's Tale:" textToCopy={story}><p>{story}</p></ResultCard>}
                         {storyMessage && <p className="mt-2 text-sm text-red-500">{storyMessage}</p>}
 
-                        <ActionButton onClick={expandPrompt} isLoading={isExpandLoading} disabled={!prompt} className="bg-sky-600 hover:bg-sky-700 focus:ring-sky-400">➕ Expand Prompt</ActionButton>
+                        <div className="bg-slate-900/50 p-4 rounded-xl">
+                            <ActionButton onClick={expandPrompt} isLoading={isExpandLoading} disabled={!prompt} className="bg-sky-600 hover:bg-sky-700 focus:ring-sky-400">➕ Expand Prompt</ActionButton>
+                        </div>
                         {expandedPrompt && <ResultCard title="Expanded Prompt:" textToCopy={expandedPrompt}><p>{expandedPrompt}</p></ResultCard>}
                         {expandMessage && <p className="mt-2 text-sm text-red-500">{expandMessage}</p>}
 
-                        <ActionButton onClick={generateHashtags} isLoading={isHashtagsLoading} disabled={!prompt} className="bg-rose-600 hover:bg-rose-700 focus:ring-rose-400">🏷️ Generate Hashtags</ActionButton>
+                        <div className="bg-slate-900/50 p-4 rounded-xl">
+                            <ActionButton onClick={generateHashtags} isLoading={isHashtagsLoading} disabled={!prompt} className="bg-rose-600 hover:bg-rose-700 focus:ring-rose-400">🏷️ Generate Hashtags</ActionButton>
+                        </div>
                         {hashtags.length > 0 && <ResultCard title="Suggested Hashtags:" textToCopy={hashtags.join(' ')}><p>{hashtags.join(' ')}</p></ResultCard>}
                         {hashtagMessage && <p className="mt-2 text-sm text-red-500">{hashtagMessage}</p>}
 
-                        <ActionButton onClick={translatePrompt} isLoading={isTranslateLoading} disabled={!prompt} className="bg-slate-600 hover:bg-slate-700 focus:ring-slate-400">🌐 Translate to Japanese</ActionButton>
+                        <div className="bg-slate-900/50 p-4 rounded-xl">
+                            <ActionButton onClick={translatePrompt} isLoading={isTranslateLoading} disabled={!prompt} className="bg-slate-600 hover:bg-slate-700 focus:ring-slate-400">🌐 Translate to Japanese</ActionButton>
+                        </div>
                         {translatedPrompt && <ResultCard title="Translated Prompt:" textToCopy={translatedPrompt}><p>{translatedPrompt}</p></ResultCard>}
                         {translateMessage && <p className="mt-2 text-sm text-red-500">{translateMessage}</p>}
                     </div>
                 )}
+                <Analytics />
                 <SpeedInsights />
             </div>
         </div>
