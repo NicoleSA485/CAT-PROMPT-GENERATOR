@@ -230,7 +230,7 @@ const App = () => {
     );
 
     const ResultCard = ({ title, children, textToCopy }) => (
-        <div className="bg-slate-900/70 p-4 rounded-xl text-left mb-6 relative">
+        <div className="bg-slate-900/[0.70] p-4 rounded-xl text-left mb-6 relative">
             <h3 className="text-lg font-semibold text-purple-300 mb-3">{title}</h3>
             <div className="text-slate-300 italic leading-relaxed pr-10">
                 {children}
@@ -245,7 +245,7 @@ const App = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-900 bg-gradient-to-br from-gray-900 via-purple-900 to-black p-4 text-slate-200">
-            <div className="bg-slate-800/50 backdrop-blur-xl p-6 sm:p-8 rounded-2xl max-w-2xl w-full text-center">
+            <div className="bg-slate-800/[0.50] backdrop-blur-xl p-6 sm:p-8 rounded-2xl max-w-2xl w-full text-center">
                 <h1 className="text-3xl sm:text-5xl font-extrabold text-purple-300 mb-6 drop-shadow-lg flex items-center justify-center">
                     <img src="/FavIcon.png" alt="Cat Icon" className="inline-block mx-2 align-middle" width="104" height="104" /> Ai Cat Prompt Generator <img src="/FavIcon.png" alt="Cat Icon" className="inline-block mx-2 align-middle" width="104" height="104" />
                 </h1>
@@ -256,11 +256,11 @@ const App = () => {
                 </div>
                 
                 
-                <div className="mb-8 min-h-[120px] flex items-center justify-center bg-slate-900/70 p-6 rounded-xl relative">
+                <div className="mb-8 min-h-[120px] flex items-center justify-center bg-slate-900/[0.70] p-6 rounded-xl relative">
                     {isLoading ? <span className="text-purple-400">Generating...</span> : (prompt ? <p className="text-lg sm:text-xl text-white italic leading-relaxed">{prompt}</p> : <p className="text-lg text-slate-400">Your cosmic cat prompt will appear here.</p>)}
                 </div>
 
-                <div className="bg-slate-900/50 p-4 rounded-xl">
+                <div className="bg-slate-900/[0.50] p-4 rounded-xl">
                     
                     {prompt && !isLoading && (
                         <div className="inline-block">
@@ -277,33 +277,33 @@ const App = () => {
                         <h2 className="text-2xl font-bold text-purple-300 mb-6">Explore More Options</h2>
                         
                         <div className="flex flex-wrap justify-center gap-4">
-                        <div className="bg-slate-900/50 p-4 rounded-xl">
+                        <div className="bg-slate-900/[0.50] p-4 rounded-xl">
                             <ActionButton onClick={generateVariations} isLoading={isVariationsLoading} disabled={!prompt} className="bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-400">💡 Suggest Variations</ActionButton>
                         </div>
                         {variations.length > 0 && <ResultCard title="Prompt Variations:" textToCopy={variations.join(`
 
-`)}><ul className="list-none space-y-2">{variations.map((v, i) => <li key={i} className="p-2 bg-slate-800/50 rounded-md">{v}</li>)}</ul></ResultCard>}
+`)}><ul className="list-none space-y-2">{variations.map((v, i) => <li key={i} className="p-2 bg-slate-800/[0.50] rounded-md">{v}</li>)}</ul></ResultCard>}
                         {variationMessage && <p className="mt-2 text-sm text-red-500">{variationMessage}</p>}
 
-                        <div className="bg-slate-900/50 p-4 rounded-xl">
+                        <div className="bg-slate-900/[0.50] p-4 rounded-xl">
                             <ActionButton onClick={generateStory} isLoading={isStoryLoading} disabled={!prompt} className="bg-teal-600 hover:bg-teal-700 focus:ring-teal-400">📖 Generate Story</ActionButton>
                         </div>
                         {story && <ResultCard title="The Cat's Tale:" textToCopy={story}><p>{story}</p></ResultCard>}
                         {storyMessage && <p className="mt-2 text-sm text-red-500">{storyMessage}</p>}
 
-                        <div className="bg-slate-900/50 p-4 rounded-xl">
+                        <div className="bg-slate-900/[0.50] p-4 rounded-xl">
                             <ActionButton onClick={expandPrompt} isLoading={isExpandLoading} disabled={!prompt} className="bg-sky-600 hover:bg-sky-700 focus:ring-sky-400">➕ Expand Prompt</ActionButton>
                         </div>
                         {expandedPrompt && <ResultCard title="Expanded Prompt:" textToCopy={expandedPrompt}><p>{expandedPrompt}</p></ResultCard>}
                         {expandMessage && <p className="mt-2 text-sm text-red-500">{expandMessage}</p>}
 
-                        <div className="bg-slate-900/50 p-4 rounded-xl">
+                        <div className="bg-slate-900/[0.50] p-4 rounded-xl">
                             <ActionButton onClick={generateHashtags} isLoading={isHashtagsLoading} disabled={!prompt} className="bg-rose-600 hover:bg-rose-700 focus:ring-rose-400">🏷️ Generate Hashtags</ActionButton>
                         </div>
                         {hashtags.length > 0 && <ResultCard title="Suggested Hashtags:" textToCopy={hashtags.join(' ')}><p>{hashtags.join(' ')}</p></ResultCard>}
                         {hashtagMessage && <p className="mt-2 text-sm text-red-500">{hashtagMessage}</p>}
 
-                        <div className="bg-slate-900/50 p-4 rounded-xl">
+                        <div className="bg-slate-900/[0.50] p-4 rounded-xl">
                             <ActionButton onClick={translatePrompt} isLoading={isTranslateLoading} disabled={!prompt} className="bg-slate-600 hover:bg-slate-700 focus:ring-slate-400">🌐 Translate to Japanese</ActionButton>
                         </div>
                         {translatedPrompt && <ResultCard title="Translated Prompt:" textToCopy={translatedPrompt}><p>{translatedPrompt}</p></ResultCard>}
