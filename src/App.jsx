@@ -181,7 +181,7 @@ const App = () => {
             const result = await callApi(payload);
             if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
                 const jsonText = result.candidates[0].content.parts[0].text;
-                setHashtags(JSON.parse(jsonText).map(tag => `#${tag.replace(/[^a-zA-Z0-9]/g, '')}`));
+                                setHashtags(JSON.parse(jsonText).map(tag => `#${tag.replace(/[^a-zA-Z0-9]/g, '')}`));
             } else {
                 setHashtagMessage('Failed to generate hashtags.');
             }
